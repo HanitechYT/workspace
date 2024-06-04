@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض المخططات</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2em;
+        }
+        canvas {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>عرض المخططات</h1>
+        <canvas id="genderChart" width="400" height="200"></canvas>
+        <canvas id="ageChart" width="400" height="200"></canvas>
+        <canvas id="locationChart" width="400" height="200"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let genderCount = JSON.parse(localStorage.getItem('genderCount')) || { 'ذكر': 0, 'أنثى': 0 };
+        let ageGroups = JSON.parse(localStorage.getItem('ageGroups')) || { '0-18': 0, '19-35': 0, '36-50': 0, '50+': 0 };
+        let locationCount = JSON.parse(localStorage.getItem('locationCount')) || { 'دمشق': 0, 'حمص': 0, 'حماه': 0, 'اللاذقية': 0, 'درعا': 0, 'إدلب': 0, 'حلب': 0 };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const genderCtx = document.getElementById('genderChart').getContext('2d');
+            const ageCtx = document.getElementById('ageChart').getContext('2d');
+            const locationCtx = document.getElementById('locationChart').getContext('2d');
+
+            new Chart(genderCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['ذكر', 'أنثى'],
+                    datasets: [{
+                        data: [genderCount['ذكر'], genderCount['أنثى']],
+                        backgroundColor: ['#4CAF50', '#FF6384']
+                    }]
+                }
+            });
+
+            new Chart(ageCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-18', '19-35', '36-50', '50+'],
+                    datasets: [{
+                        label: 'الفئات العمرية',
+                        data: [ageGroups['0-18'], ageGroups['19-35'], ageGroups['36-50'], ageGroups['50+']],
+                        backgroundColor: '#4CAF50'
+                    }]
+                }
+            });
+
+            new Chart(locationCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(locationCount),
+                    datasets: [{
+                        data: Object.values(locationCount),
+                        backgroundColor: ['#4CAF50', '#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#FF6384', '#36A2EB']
+                    }]
+                }
+            });
+        });
+    </script>
+</body>
+</html>

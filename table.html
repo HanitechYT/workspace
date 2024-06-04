@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الجدول</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2em;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            font-size: 1.2em;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>عرض الجدول</h1>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>رقم تسلسلي</th>
+                    <th>الاسم</th>
+                    <th>الجنس</th>
+                    <th>العمر</th>
+                    <th>تاريخ الميلاد</th>
+                    <th>مكان السكن</th>
+                    <th>رقم الهاتف</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let data = JSON.parse(localStorage.getItem('data')) || [];
+
+        function updateTable() {
+            const tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            data.forEach((entry, index) => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerText = index + 1;
+                row.insertCell(1).innerText = entry.name;
+                row.insertCell(2).innerText = entry.gender;
+                row.insertCell(3).innerText = entry.age;
+                row.insertCell(4).innerText = entry.dob;
+                row.insertCell(5).innerText = entry.location;
+                row.insertCell(6).innerText = entry.phone;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateTable);
+    </script>
+</body>
+</html>

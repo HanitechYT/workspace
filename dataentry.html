@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج إدخال البيانات</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+        .form-group input, .form-group select, .form-group button {
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 1.2em;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .links a {
+            margin: 0 10px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .links a:hover {
+            color: #388E3C;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>نموذج إدخال البيانات</h1>
+        <div class="form-group">
+            <label for="name">الاسم:</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">الجنس:</label>
+            <select id="gender" required>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="age">العمر:</label>
+            <input type="number" id="age" required>
+        </div>
+        <div class="form-group">
+            <label for="dob">تاريخ الميلاد:</label>
+            <input type="date" id="dob" required>
+        </div>
+        <div class="form-group">
+            <label for="location">مكان السكن:</label>
+            <select id="location" required>
+                <option value="دمشق">دمشق</option>
+                <option value="حمص">حمص</option>
+                <option value="حماه">حماه</option>
+                <option value="اللاذقية">اللاذقية</option>
+                <option value="درعا">درعا</option>
+                <option value="إدلب">إدلب</option>
+                <option value="حلب">حلب</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone">رقم الهاتف:</label>
+            <input type="text" id="phone" required>
+        </div>
+        <div class="form-group">
+            <button onclick="addData()">إدخال البيانات</button>
+        </div>
+        <div class="links">
+            <a href="table.html">عرض الجدول</a>
+            <a href="charts.html">عرض المخططات</a>
+        </div>
+    </div>
+    <script>
+        let data = JSON.parse(localStorage.getItem('data')) || [];
+        let genderCount = JSON.parse(localStorage.getItem('genderCount')) || { 'ذكر': 0, 'أنثى': 0 };
+        let ageGroups = JSON.parse(localStorage.getItem('ageGroups')) || { '0-18': 0, '19-35': 0, '36-50': 0, '50+': 0 };
+        let locationCount = JSON.parse(localStorage.getItem('locationCount')) || { 'دمشق': 0, 'حمص': 0, 'حماه': 0, 'اللاذقية': 0, 'درعا': 0, 'إدلب': 0, 'حلب': 0 };
+
+        function addData() {
+            const name = document.getElementById('name').value;
+            const gender = document.getElementById('gender').value;
+            const age = document.getElementById('age').value;
+            const dob = document.getElementById('dob').value;
+            const location = document.getElementById('location').value;
+            const phone = document.getElementById('phone').value;
+
+            const newData = { name, gender, age, dob, location, phone };
+            data.push(newData);
+
+            genderCount[gender]++;
+            if (age <= 18) ageGroups['0-18']++;
+            else if (age <= 35) ageGroups['19-35']++;
+            else if (age <= 50) ageGroups['36-50']++;
+            else ageGroups['50+']++;
+            locationCount[location]++;
+
+            localStorage.setItem('data', JSON.stringify(data));
+            localStorage.setItem('genderCount', JSON.stringify(genderCount));
+            localStorage.setItem('ageGroups', JSON.stringify(ageGroups));
+            localStorage.setItem('locationCount', JSON.stringify(locationCount));
+
+            alert('تم إدخال البيانات بنجاح');
+        }
+    </script>
+</body>
+</html>
